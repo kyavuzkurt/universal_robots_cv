@@ -23,6 +23,7 @@ setup(
             'camera_node = universal_robots_cv.camera_node:main',
             'object_recognition_node = universal_robots_cv.object_recognition_node:main',
             'tracked_image_node = universal_robots_cv.tracked_image_node:main',
+            'motion_planning_node = universal_robots_cv.motion_planning_node:main',
         ],
     },
 )

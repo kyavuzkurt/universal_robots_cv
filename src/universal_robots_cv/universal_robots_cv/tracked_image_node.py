@@ -9,11 +9,31 @@ from cv_bridge import CvBridge, CvBridgeError
 class TrackedImageNode(Node):
     def __init__(self):
         super().__init__('tracked_image_node')
-        self.image_sub = self.create_subscription(
-            Image,
-            '/camera/tracked_image',
-            self.listener_callback,
-            10)
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('detection_type', rclpy.Parameter.Type.STRING),
+            ]
+        )
+    #Test parameter method. Try rclpy.parameters.Parameter https://docs.ros2.org/foxy/api/rclpy/api/parameters.html
+        self.detection_type = self.get_parameter('detection_type').value
+        if self.detection_type == 'coco':
+            self.get_logger().info('Initializing COCO detection...')
+            self.tracked_image_sub = self.create_subscription(
+                    Image,
+                '/camera/tracked_image',
+                self.listener_callback,
+                10)
+        elif self.detection_type == 'aruco':
+            self.get_logger().info('Initializing ArUco detection')
+            self.aruco_image_sub = self.create_subscription(
+                Image,
+                '/camera/aruco_image',
+                self.listener_callback,
+                10)
+        else:
+            self.get_logger().error('Invalid detection type. Please enter either "aruco" or "coco"')
+        
         self.bridge = CvBridge()
 
     def listener_callback(self, msg):
