@@ -1,0 +1,6 @@
+source;share/universal_robots_cv/hook/pythonpath.ps1
+source;share/universal_robots_cv/hook/pythonpath.dsv
+source;share/universal_robots_cv/hook/pythonpath.sh
+source;share/universal_robots_cv/hook/ament_prefix_path.ps1
+source;share/universal_robots_cv/hook/ament_prefix_path.dsv
+source;share/universal_robots_cv/hook/ament_prefix_path.sh
