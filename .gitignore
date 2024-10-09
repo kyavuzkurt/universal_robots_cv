@@ -4,6 +4,8 @@ build/
 bin/
 lib/
 log/
+src/aruco_ros2/
+src/ros2_monocular_depth/
 msg_gen/
 srv_gen/
 msg/*Action.msg
@@ -32,6 +34,9 @@ devel_isolated/
 
 # qcreator stuff
 CMakeLists.txt.user
+
+#Model files
+*.pt
 
 srv/_*.py
 *.pcd
