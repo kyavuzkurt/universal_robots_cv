@@ -16,7 +16,7 @@ class ArucoNode(Node):
             '/camera/image_raw',
             self.listener_callback,
             10)
-        self.marker_pub = self.create_publisher(Marker, '/aruco_markers', 10)
+        self.marker_pub = self.create_publisher(Marker, '/object_info/aruco_markers', 10)
         self.image_pub = self.create_publisher(Image, '/camera/aruco_image', 10)
 
     def listener_callback(self, msg):

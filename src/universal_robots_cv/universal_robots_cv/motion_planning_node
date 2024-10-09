@@ -5,25 +5,24 @@ from rclpy.node import Node
 from object_recognition_msgs.msg import ObjectInformation
 from sensor_msgs.msg import JointState
 
+
 class MotionPlanningNode(Node):
     def __init__(self):
         super().__init__('motion_planning_node')
         self.get_logger().info('Motion planning node initialized')
         self.object_info_sub = self.create_subscription(
             ObjectInformation,
-            '/object_info',
+            '/object_info/filtered_object_info',
             self.listener_callback,
             10)
-        self.joint_state_pub = self.create_publisher(JointState, '/joint_states', 10)
+        
+        self.joint_state_pub = self.create_publisher(JointState, '/joint_state_publisher', 10)
 
     def listener_callback(self, msg):
         self.get_logger().info('Received object info')
-        self.filtered_object_info = self.filter_object_info(msg)
-        self.move_to_object(self.filtered_object_info)
+        self.move_to_object(msg.name)
+        
 
-    def filter_object_info(self, msg):
-        # TODO: Implement object filtering
-        return msg
 
     def move_to_object(self, object_name):
         self.get_logger().info('Moving to object: %s', object_name)

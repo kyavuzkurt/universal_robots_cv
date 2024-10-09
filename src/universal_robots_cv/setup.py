@@ -24,6 +24,8 @@ setup(
             'object_recognition_node = universal_robots_cv.object_recognition_node:main',
             'tracked_image_node = universal_robots_cv.tracked_image_node:main',
             'motion_planning_node = universal_robots_cv.motion_planning_node:main',
+            'object_filtering_node = universal_robots_cv.object_filtering_node:main',
+            '3d_mapping_node = universal_robots_cv.3d_mapping_node:main',
         ],
     },
 )
