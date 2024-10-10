@@ -1,0 +1,6 @@
+source;share/ros2_monocular_depth/hook/pythonpath.ps1
+source;share/ros2_monocular_depth/hook/pythonpath.dsv
+source;share/ros2_monocular_depth/hook/pythonpath.sh
+source;share/ros2_monocular_depth/hook/ament_prefix_path.ps1
+source;share/ros2_monocular_depth/hook/ament_prefix_path.dsv
+source;share/ros2_monocular_depth/hook/ament_prefix_path.sh

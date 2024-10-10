@@ -1,1 +1,1 @@
-cv_bridge:object_detection_msgs:rclpy:sensor_msgs:std_msgs:torch:torchvision
+cv2:cv_bridge:object_detection_msgs:rclpy:sensor_msgs:std_msgs:torch:torchvision:visualization_msgs
