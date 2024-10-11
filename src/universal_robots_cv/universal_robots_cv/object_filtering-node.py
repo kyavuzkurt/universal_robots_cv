@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from object_recognition_msgs.msg import ObjectInformation
+from object_recognition_msgs.msg import RecognizedObjectArray, RecognizedObject
 import os
 import yaml
 
@@ -20,12 +20,12 @@ class ObjectFilteringNode():
         self.object_name = self.get_parameter("object_name").value
 
         self.subscription = self.create_subscription(
-            ObjectInformation,
+            RecognizedObjectArray,
             "/object_info/object_info",
             self.object_information_callback,
             10
         )
-        self.filtered_object_pub = self.create_publisher(ObjectInformation, "/object_info/filtered_object_info", 10)
+        self.filtered_object_pub = self.create_publisher(RecognizedObject, "/object_info/filtered_object_info", 10)
         labels_path = os.path.join(
             self.get_package_share_directory('universal_robots_cv'),
             'config',
@@ -43,9 +43,11 @@ class ObjectFilteringNode():
     def object_information_callback(self, msg):
         self.get_logger().info("Received object information")
         self.get_logger().info(msg)
-        if msg.name in self.coco_labels:
-            self.get_logger().info("Object is in the list")
-            self.filtered_object_pub.publish(msg)
+        unfiltered_objects = msg
+        for object in unfiltered_objects.objects:
+            if object.type == self.object_name and self.object_name in self.coco_labels:
+                self.get_logger().info("Object is in the list, Publishing object coordinates to movement planning node")
+                self.filtered_object_pub.publish(object)
         else:
             self.get_logger().info("Object is not in the list, skipping")
 

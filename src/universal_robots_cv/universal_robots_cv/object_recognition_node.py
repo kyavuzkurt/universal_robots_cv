@@ -1,12 +1,13 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from object_recognition_msgs.msg import ObjectInformation
+from object_recognition_msgs.msg import RecognizedObject, RecognizedObjectArray, ObjectType
 from cv_bridge import CvBridge, CvBridgeError
 import cv2 as cv
 import torch
 import torchvision
 from torchvision.models.detection import FasterRCNN_ResNet50_FPN_Weights
+from geometry_msgs.msg import Point
 import yaml
 import os
 
@@ -20,7 +21,7 @@ class ObjectRecognitionNode(Node):
                                                     self.listener_callback,
                                                     10)
         self.tracked_image_pub = self.create_publisher(Image, '/camera/tracked_image', 10)
-        self.object_info_pub = self.create_publisher(ObjectInformation, '/object_info/object_info', 10)
+        self.object_info_pub = self.create_publisher(RecognizedObjectArray, '/object_info/object_info', 10)
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights=FasterRCNN_ResNet50_FPN_Weights.DEFAULT)
         self.model.eval()
         
@@ -62,9 +63,20 @@ class ObjectRecognitionNode(Node):
                 self.get_logger().info('Detected object: %s' % label_name)
                 
                 # Publish ObjectInformation
-                object_info = ObjectInformation()
-                object_info.name = label_name
-                self.object_info_pub.publish(object_info)
+                object_info = RecognizedObject()
+                object_type = ObjectType()
+                object_type = label_name
+                object_info.type = object_type
+                object_point = Point()
+                object_point.x = (x1 + x2) / 2
+                object_point.y = (y1 + y2) / 2
+                object_info.bounding_contours = [object_point]
+                object_confidence = score
+                object_info.confidence = object_confidence
+                object_info_array = RecognizedObjectArray()
+                object_info_array.objects.append(object_info)
+                self.object_info_pub.publish(object_info_array)
+
                 
                 try:
                     detection_image = self.bridge.cv2_to_imgmsg(cv_image, 'bgr8')
