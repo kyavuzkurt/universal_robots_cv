@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.5)
+project(universal_robots_cv)
+
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+# Find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(ament_index_cpp REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+
+# Python dependencies
+find_package(setuptools REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)
+
+# Include directories
+include_directories(include)
+
+# Declare C++ executables (Add your C++ nodes here)
+# Example:
+# add_executable(your_cpp_node src/your_cpp_node.cpp)
+# ament_target_dependencies(your_cpp_node rclcpp std_msgs)
+# install(TARGETS your_cpp_node
+#   DESTINATION lib/${PROJECT_NAME})
+
+# Install Python modules and console scripts
+ament_python_install_package(${PROJECT_NAME})
+
+# Install Python executables
+install(PROGRAMS
+  scripts/camera_node.py
+  scripts/object_recognition_node.py
+  scripts/tracked_image_node.py
+  scripts/motion_planning_node.py
+  scripts/object_filtering_node.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Export dependencies
+ament_package()
