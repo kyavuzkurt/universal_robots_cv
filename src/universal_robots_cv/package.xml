@@ -7,11 +7,9 @@
   <maintainer email="k.yavuzkurt1@gmail.com">kayeka</maintainer>
   <license>MIT</license>
 
-  <build_tool_depend>ament_cmake</build_tool_depend>
   <build_tool_depend>ament_cmake_python</build_tool_depend>
 
   <depend>rclpy</depend>
-  <depend>rclcpp</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>cv_bridge</depend>
@@ -26,6 +24,6 @@
   <test_depend>python3-pytest</test_depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
+    <build_type>ament_python</build_type>
   </export>
 </package>

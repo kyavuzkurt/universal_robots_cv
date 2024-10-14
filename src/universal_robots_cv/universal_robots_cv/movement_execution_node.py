@@ -10,7 +10,7 @@ from control_msgs.action import FollowJointTrajectory
 class MovementExecutionNode(Node):
 
     def __init__(self):
-        super().__init__("ur_movement_execution")
+        super().__init__("movement_execution_node")
         self.declare_parameter("controller_name", "scaled_joint_trajectory_controller")
         self.declare_parameter("joints", [
             "shoulder_pan_joint",
@@ -21,7 +21,7 @@ class MovementExecutionNode(Node):
             "wrist_3_joint",
         ])
 
-
+        self.get_logger().info("Movement execution node initialized")
         controller_name = self.get_parameter("controller_name").value + "/follow_joint_trajectory"
         self.joints = self.get_parameter("joints").value
 
@@ -30,7 +30,7 @@ class MovementExecutionNode(Node):
 
         self.planned_trajectory_subscription = self.create_subscription(
             JointTrajectory,
-            "planned_trajectory",
+            "/planned_trajectory",
             self.planned_trajectory_callback,
             10
         )
